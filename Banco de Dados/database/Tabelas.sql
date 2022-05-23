@@ -3,7 +3,7 @@ use estoque_inteligente;
 
 create table Produto(
     id Integer primary key auto_increment,
-    NomeProduto varchar(50) not null,
+    NomeProduto varchar(50) not null unique,
     Preco float,
     peso_medio float not null,
     estoque integer default 0
