@@ -42,3 +42,12 @@ begin
         update Produto set estoque = @estoque_atual + quantidade where id=produto_id;
     end if;
 end $$
+
+delimiter $$
+create procedure criarPrateleira(produto_nome varchar(50), capacidadeP integer)
+begin
+    insert into Prateleira(capacidade, produto) values(
+    capacidadeP,
+    (select id from Produto where NomeProduto=produto_nome)
+);
+end $$
