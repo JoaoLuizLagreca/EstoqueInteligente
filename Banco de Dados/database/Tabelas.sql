@@ -28,7 +28,7 @@ create table Prateleira(
 );
 
 create table Log_de_estoque(
-    data_estocagem datetime not null,
+    data_estocagem datetime not null default sysdate(),
     quantidade integer not null,
     preco float,
     produto integer not null,
