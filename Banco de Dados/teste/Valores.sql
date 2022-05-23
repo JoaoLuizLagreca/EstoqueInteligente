@@ -1,12 +1,8 @@
 use estoque_inteligente;
 
-insert into Produto(NomeProduto, Preco, peso_medio) values (
-    'Anti-pulgas',
-    15.45,
-    0.80
-);
+call adicionarProduto('Anti-pulgas', 15.45, 0.80);
+call criarPrateleira('Anti-pulgas', 30);
+call reestocar('Anti-pulgas', 50);
 
-insert into Prateleira(capacidade, produto) values(
-    30,
-    (select id from Produto where NomeProduto='Anti-pulgas')
-);
+call compra('Anti-pulgas', 4);
+call compra('Anti-pulgas', 2);
