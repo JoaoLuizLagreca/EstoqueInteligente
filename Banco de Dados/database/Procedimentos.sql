@@ -11,18 +11,17 @@ begin
 end $$
 
 delimiter $$
-create procedure compra(produto_nome varchar(50), quantidade integer) 
+create procedure compra(produto_id integer, quantidade integer)
 begin
     if quantidade > 0 then
-        select @produto_id := id from Produto where NomeProduto = produto_nome;
-        select @estoque_atual := estoque from Produto where id=@produto_id;
+        select @estoque_atual := estoque from Produto where id=produto_id;
 
         if @estoque_atual - quantidade < 0 then
             # Relatar erro
             signal SQLSTATE 'ERROR'
             set MESSAGE_TEXT = 'Estoque seria inferior à 0 com essa quantidade';
         else
-            update Produto set estoque = @estoque_atual - quantidade where id=@produto_id;
+            update Produto set estoque = @estoque_atual - quantidade where id=produto_id;
         end if;
     else
         # Relatar erro
@@ -32,16 +31,15 @@ begin
 end $$
 
 delimiter $$
-create procedure reestocar(produto_nome varchar(50), quantidade integer)
+create procedure reestocar(produto_id integer, quantidade integer)
 begin
     if quantidade <= 0 then
         # Relatar erro
         signal SQLSTATE 'ERROR'
         set MESSAGE_TEXT = 'Valor quantidade inválido';
     else
-        select @produto_id := id from Produto where NomeProduto = produto_nome;
-        select @estoque_atual := estoque from Produto where id=@produto_id;
-        update Produto set estoque = @estoque_atual + quantidade where id=@produto_id;
+        select @estoque_atual := estoque from Produto where id=produto_id;
+        update Produto set estoque = @estoque_atual + quantidade where id=produto_id;
     end if;
 end $$
 
