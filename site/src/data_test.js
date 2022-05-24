@@ -5,3 +5,8 @@ export const InventoryData = [
         {Mes: 'Abril', Quantidade: 2000},
         {Mes: 'Maio', Quantidade: 2181},
     ];
+
+    const BigNumbers = [
+        {featureData: 15 ,featureDataRate: -2},
+        {featureData: 15 ,featureDataRate: -2},
+    ]
