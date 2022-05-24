@@ -1,0 +1,33 @@
+.TopBarContainer{
+    width: 100%;
+    display: flex;
+    padding-left: 12%;
+    background-color: #2E3440;
+    color: #D8DEE9;
+    height: 55px;
+    align-items: center;
+}
+
+.TopBarIcon{
+    height: 100%;
+    padding: 0px 20px;
+    display: flex;
+}
+
+.Menu{
+    width: 100%;
+    overflow: hidden;
+}
+
+.MenuBar a{
+    align-content: flex-end;
+    text-decoration: none;
+    color: #D8DEE9 ;
+    padding: 12px;
+}
+
+.MenuBar a:hover{
+    text-decoration: none;
+    background-color: #D8DEE9;
+    color: #2E3440;
+}
