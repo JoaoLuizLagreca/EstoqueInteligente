@@ -3,6 +3,8 @@
 #define DT 33
 #define SCK 32
 
+TaskHandle_t Core0T;
+TaskHandle_t Core1T;
 
 HX711 scale;
 
@@ -18,7 +20,20 @@ void setup() {
   // put your setup code here, to run once:
 
   Serial.begin(9600);
-  scale.begin(DT, SCK);
+
+  xTaskCreatePinnedToCore(NetworkHandle, "CPU 0", 1000, NULL, 1, &Core0T, 0);
+  xTaskCreatePinnedToCore(SensorHandle, "CPU 1", 1000, NULL, 1, &Core1T, 1);
+  
+}
+
+void NetworkHandle(void * pr){
+  while (true){
+    delay(1);
+  }
+}
+
+void SensorHandle(void * pr){
+    scale.begin(DT, SCK);
   scale.set_scale(LOADCELL_DIVIDER);
   scale.set_offset(LOADCELL_OFFSET);
 
@@ -35,13 +50,17 @@ void setup() {
   delay(1000);
   peso_produto=scale.get_units(10);
   Serial.print("Peso do produto: "); Serial.println(peso_produto, 5);
+
+  float p;
+  while (true){
+    p = scale.get_units(10);
+
+    Serial.print("Produtos na prateleira: "); Serial.println(floor(p/peso_produto));
+    delay(200);
+  }
+  
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-
-  float p = scale.get_units(10);
-
-  Serial.print("Produtos na prateleira: "); Serial.println(floor(p/peso_produto));
-  delay(200);
+  delay(0);
 }
