@@ -1,7 +1,17 @@
 #include "HX711.h"
+#include <WiFi.h>
 
 #define DT 33
 #define SCK 32
+
+const char* ssid = "WiFi ESP32"
+const char* wifi_password = "esp446923"
+
+// 2. Adjustment settings
+const long LOADCELL_OFFSET = 50682624;
+const long LOADCELL_DIVIDER = 5895655;
+
+
 
 TaskHandle_t Core0T;
 TaskHandle_t Core1T;
@@ -9,9 +19,6 @@ TaskHandle_t Core1T;
 HX711 scale;
 
 
-// 2. Adjustment settings
-const long LOADCELL_OFFSET = 50682624;
-const long LOADCELL_DIVIDER = 5895655;
 
 
 const float desvio=0.000015;
