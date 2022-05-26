@@ -29,7 +29,7 @@ void setup() {
   Serial.begin(9600);
 
   xTaskCreatePinnedToCore(NetworkHandle, "CPU 0", 5200, NULL, 1, &Core0T, 0);
-  xTaskCreatePinnedToCore(SensorHandle, "CPU 1", 1000, NULL, 1, &Core1T, 1);
+  xTaskCreatePinnedToCore(SensorHandle, "CPU 1", 2000, NULL, 1, &Core1T, 1);
   
 }
 
