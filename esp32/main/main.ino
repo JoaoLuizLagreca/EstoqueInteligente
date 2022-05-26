@@ -4,8 +4,8 @@
 #define DT 33
 #define SCK 32
 
-const char* ssid = "WiFi ESP32"
-const char* wifi_password = "esp446923"
+const char* ssid = "WiFi ESP32";
+const char* wifi_password = "esp446923"; // Método prototipal, em um modelo de lançamento, o produto deveria apresentar uma interface de configuração para conectar à uma rede
 
 // 2. Adjustment settings
 const long LOADCELL_OFFSET = 50682624;
@@ -28,19 +28,26 @@ void setup() {
 
   Serial.begin(9600);
 
+  Serial.println("Conectando ao WiFi...");
+  WiFi.begin(ssid, wifi_password); // Conecta ao WiFi designado
+
   xTaskCreatePinnedToCore(NetworkHandle, "CPU 0", 1000, NULL, 1, &Core0T, 0);
   xTaskCreatePinnedToCore(SensorHandle, "CPU 1", 1000, NULL, 1, &Core1T, 1);
   
 }
 
 void NetworkHandle(void * pr){
+
+  while (WiFi.status() != WL_CONNECTED){ delay(300); }
+  Serial.println("Conectado!");
+  
   while (true){
     delay(1);
   }
 }
 
 void SensorHandle(void * pr){
-    scale.begin(DT, SCK);
+  scale.begin(DT, SCK);
   scale.set_scale(LOADCELL_DIVIDER);
   scale.set_offset(LOADCELL_OFFSET);
 
@@ -65,6 +72,8 @@ void SensorHandle(void * pr){
     Serial.print("Produtos na prateleira: "); Serial.println(floor(p/peso_produto));
     delay(200);
   }
+  
+  while(true){delay(1);}
   
 }
 
