@@ -17,12 +17,10 @@ TaskHandle_t Core0T;
 TaskHandle_t Core1T;
 
 HX711 scale;
-
-
+float peso;
 
 
 const float desvio=0.000015;
-float peso_produto;
 void setup() {
   // put your setup code here, to run once:
 
@@ -55,22 +53,12 @@ void SensorHandle(void * pr){
   Serial.println("Tarando...");
   delay(3000);
   scale.tare();
-
-  Serial.println("Coloque 1 item na prateleira");
-  while(scale.get_units(10)<desvio){
-    delay(500);
-  }
-  Serial.println("Medindo produto...");
-  delay(1000);
-  peso_produto=scale.get_units(10);
-  Serial.print("Peso do produto: "); Serial.println(peso_produto, 5);
-
-  float p;
+  
   while (true){
-    p = scale.get_units(10);
+    peso = scale.get_units(10);
 
-    Serial.print("Produtos na prateleira: "); Serial.println(floor(p/peso_produto));
-    delay(200);
+    Serial.print("Peso da prateleira: "); Serial.println(peso, 5);
+    delay(10);
   }
   
 }
