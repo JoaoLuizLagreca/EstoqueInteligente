@@ -31,7 +31,7 @@ void setup() {
   Serial.println("Conectando ao WiFi...");
   WiFi.begin(ssid, wifi_password); // Conecta ao WiFi designado
 
-  xTaskCreatePinnedToCore(NetworkHandle, "CPU 0", 1000, NULL, 1, &Core0T, 0);
+  xTaskCreatePinnedToCore(NetworkHandle, "CPU 0", 5200, NULL, 1, &Core0T, 0);
   xTaskCreatePinnedToCore(SensorHandle, "CPU 1", 1000, NULL, 1, &Core1T, 1);
   
 }
