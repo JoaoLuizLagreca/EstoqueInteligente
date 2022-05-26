@@ -78,5 +78,5 @@ void SensorHandle(void * pr){
 }
 
 void loop() {
-  delay(0);
+  delay(1);
 }
