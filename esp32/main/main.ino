@@ -73,8 +73,6 @@ void SensorHandle(void * pr){
     delay(200);
   }
   
-  while(true){delay(1);}
-  
 }
 
 void loop() {
