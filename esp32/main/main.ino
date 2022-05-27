@@ -78,6 +78,7 @@ void SensorHandle(void * pr){
   Serial.println("Tarando...");
   delay(3000);
   scale.tare();
+  Serial.println("Tarado!");
   
   while (true){
     peso = scale.get_units(10);
