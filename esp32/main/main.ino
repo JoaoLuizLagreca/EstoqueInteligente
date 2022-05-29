@@ -58,7 +58,6 @@ void NetworkHandle(void * pr){
     }
   }
 
-  int code;
   while (true){
    
     if(WiFi.status() == WL_CONNECTED){
