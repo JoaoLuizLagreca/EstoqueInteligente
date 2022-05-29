@@ -1,11 +1,11 @@
 #include "HX711.h"
-#include <WiFiManager.h>
+#include <WiFiManager.h> /* https://github.com/tzapu/WiFiManager */
 #include <WiFi.h>
 #include <DNSServer.h>
 #include <WebServer.h>
-#include <HTTPClient.h>
+#include <HTTPClient.h> /* https://github.com/espressif/arduino-esp32/tree/master/libraries/HTTPClient */
 #include <string>
-#include <Arduino_JSON.h>
+#include <Arduino_JSON.h> /* https://github.com/arduino-libraries/Arduino_JSON */
 
 #define DT 33
 #define SCK 32
