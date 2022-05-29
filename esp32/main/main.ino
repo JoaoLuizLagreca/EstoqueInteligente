@@ -82,6 +82,7 @@ void enviarDados(WiFiClient c){
    HTTPClient http;
    
    http.begin(c, URL_AWS);
+   http.addHeader("Content-Type", "application/json");
    json["peso"]=peso;
    
    code = http.POST(JSON.stringify(json));
