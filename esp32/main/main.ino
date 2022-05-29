@@ -72,8 +72,6 @@ void NetworkHandle(void * pr){
     }
     
     delay(1000);
-  } while(true){delay(1);}
-}
 
 void enviarDados(WiFiClient c){
    int code;
