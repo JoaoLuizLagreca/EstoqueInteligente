@@ -75,6 +75,8 @@ void NetworkHandle(void * pr){
 
   }
 
+}
+
 void enviarDados(WiFiClient c){
    int code;
    JSONVar json;
