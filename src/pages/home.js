@@ -11,10 +11,7 @@ export function Home(){
   return(
       
     <SafeAreaView style={styles.container}>
-      
-      <Text style={styles.title}>
-          Welcome, %Username%
-      </Text>
+    
       <SafeAreaView style={styles.bigNumbers}>
         
         <SafeAreaView style={styles.numberBox}>
