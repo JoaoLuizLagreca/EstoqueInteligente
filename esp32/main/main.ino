@@ -1,25 +1,31 @@
 #include "HX711.h"
+#include <WiFiManager.h>
 #include <WiFi.h>
+#include <DNSServer.h>
+#include <WebServer.h>
+#include <HTTPClient.h>
 #include <string>
+#include <Arduino_JSON.h>
 
 #define DT 33
 #define SCK 32
 
-const char* ssid = "WiFi ESP32";
-const char* wifi_password = "44692324"; // Método prototipal, em um modelo de lançamento, o produto deveria apresentar uma interface de configuração para conectar à uma rede
-
 // 2. Adjustment settings
 const long LOADCELL_OFFSET = 50682624;
 const long LOADCELL_DIVIDER = 5895655;
+const char *URL_AWS = "URL do AWS";
 
 
 
 TaskHandle_t Core0T;
 TaskHandle_t Core1T;
 
+bool shouldSaveConfig = false;
 HX711 scale;
 float peso;
 WiFiServer server(80);
+WiFiManager wifiManager;
+WiFiClient wclient;
 
 const float desvio=0.000015;
 void setup() {
@@ -34,39 +40,55 @@ void setup() {
 
 void NetworkHandle(void * pr){
 
+  wifiManager.resetSettings();
 
-  Serial.println("Conectando ao WiFi...");
-  WiFi.begin(ssid, wifi_password); // Conecta ao WiFi designado
-  while (WiFi.status() != WL_CONNECTED){ delay(300); }
-  Serial.println("Conectado!");
-  Serial.print("Endereço IP: "); Serial.println(WiFi.localIP());
-
-  server.begin();
-
-  WiFiClient client;
-  float pe;
-  while (true){
-
-    client = server.available();
-    if(client){
-
-      while(client.available()){
-        client.read(); //Leia tudo para evitar colisão
+  PORTAL:{
+    //Modo de configuração do WiFi (Roteia uma rede)
+    wifiManager.setAPCallback(configModeCallback);
+    wifiManager.setSaveConfigCallback(saveConfigCallback);
+    
+    PORTAL_CONNECT:{
+      if(!wifiManager.startConfigPortal("Estoque_Inteligente")){
+        Serial.println("Ops, falhou ao criar o portal!");
+        delay(2000);
+        goto PORTAL_CONNECT;
+      }else{
+        Serial.println("WiFi salvo!"); 
       }
-      pe = peso;
-      
-      client.println("HTTP/1.1 200 OK");
-      client.println("Content-Type: application/json");
-      client.println("Connection: close");
-      client.println();
+    }
+  }
 
-      client.println("{");
-      client.println("\"peso\":"+String(pe));
-      client.println("}");
+  int code;
+  while (true){
+   
+    if(WiFi.status() == WL_CONNECTED){
+      enviarDados(wclient);
+    }else if (WiFi.status() == WL_CONNECTION_LOST){
+      wifiManager.autoConnect();
+      Serial.println("Conexão caiu! Reconectando...");
+      delay(900);
+    }else{
+      goto PORTAL;
     }
     
-    delay(100);
-  }
+    delay(1000);
+  } while(true){delay(1);}
+}
+
+void enviarDados(WiFiClient c){
+   int code;
+   JSONVar json;
+   HTTPClient http;
+   
+   http.begin(c, URL_AWS);
+   json["peso"]=peso;
+   
+   code = http.POST(JSON.stringify(json));
+   if(code !=0){
+    Serial.printf("POST falhou. Erro: %s\n", http.errorToString(code).c_str());
+   }
+   
+   http.end();
 }
 
 void SensorHandle(void * pr){
@@ -91,4 +113,16 @@ void SensorHandle(void * pr){
 
 void loop() {
   delay(1);
+}
+
+void configModeCallback (WiFiManager *myWiFiManager) {
+  Serial.print("IP do portal: ");
+  Serial.println(WiFi.softAPIP());
+
+  Serial.println(myWiFiManager->getConfigPortalSSID());
+}
+
+void saveConfigCallback () {
+  Serial.println("Salvando configuração do WiFi...");
+  shouldSaveConfig = true;
 }
