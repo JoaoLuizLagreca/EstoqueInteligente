@@ -1,6 +1,6 @@
 class Exclusao ():
 
-    def deletaProduto(self, conexao, id_produto):
+    def deletaProduto(conexao, id_produto):
         cursor = conexao.cursor()
         sql = "DELETE FROM produto WHERE id_produto = %s"
         data = (

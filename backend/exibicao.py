@@ -8,20 +8,37 @@ class Exibicao ():
 
     def exibeDadosDashboard(conexao):
         cursor = conexao.cursor()
-        sql = "SELECT * FROM log_de_estoque"
+        sql = "SELECT MONTHNAME(data_estocagem), SUM(quantidade) FROM log_de_estoque GROUP BY MONTHNAME(data_estocagem)"
         cursor.execute(sql)
         consulta = cursor.fetchall()
         cursor.close()
         conexao.close()
-
+        json_dados_dashboard = ""
         for linha in consulta:
             print(linha)
-            #tratamentos
             df_dados_dashboard = pd.DataFrame(consulta)
             consulta = df_dados_dashboard.to_json(orient="records")
             parsed = json.loads(consulta)
             json_dados_dashboard = json.dumps(parsed, indent=4)
             print(json_dados_dashboard)
+
+        return json_dados_dashboard
+
+    def exibeProdutos(conexao):
+        cursor = conexao.cursor()
+        sql = "SELECT DISTINCT(nome_produto), id_produto FROM produto"
+        cursor.execute(sql)
+        consulta = cursor.fetchall()
+        cursor.close()
+        conexao.close()
+        json_dados_dashboard = ""
+        for linha in consulta:
+            print(linha)
+            json_dados_produto = pd.DataFrame(consulta)
+            consulta = json_dados_produto.to_json(orient="records")
+            parsed = json.loads(consulta)
+            json_dados_dashboard = json.dumps(parsed, indent=4)
+            print(json_dados_produto)
 
         return json_dados_dashboard
 
@@ -32,7 +49,7 @@ class Exibicao ():
         consulta = cursor.fetchall()
         cursor.close()
         conexao.close()
-
+        json_estado_balanca = ""
         for linha in consulta:
             print(linha)
             Calculos.calculaEstado(peso, peso_medio)

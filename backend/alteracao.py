@@ -1,14 +1,15 @@
 class Alteracao ():
 
-    def alteraPrateleira(self, conexao, quantidade, capacidade, estado, produto, prateleira_id):
+    def alteraPrateleira (conexao, quantidade, capacidade, estado, produto, id_prateleira):
         cursor = conexao.cursor()
-        sql = "UPDATE prateleira SET quantidade = %s, capacidade = %s, estado = %s, produto = %s WHERE prateleira_id = %s"
+        #sql = "CALL nome_procedimento(parâmetros)"
+        sql = "UPDATE prateleira SET quantidade = %s, capacidade = %s, estado = %s, produto = %s WHERE id_prateleira = %s"
         data = (
             quantidade,
             capacidade,
             estado,
             produto,
-            prateleira_id
+            id_prateleira
         )
         cursor.execute(sql, data)
         conexao.commit()
@@ -17,15 +18,15 @@ class Alteracao ():
         conexao.close
         print(recordsaffected, "Prateleira alterada!")
 
-    def alteraProduto(self, conexao, nome_produto, preco, peso_medio, estado, estoque, produto_id):
+    def alteraProduto(conexao, nome_produto, preco, peso_medio, estado, estoque, id_produto):
         cursor = conexao.cursor()
-        sql = "UPDATE produto SET nome_produto = %s, preco = %s, peso_medio = %s, estoque = %s WHERE produto_id = %s"
+        sql = "UPDATE produto SET nome_produto = %s, preco = %s, peso_medio = %s, estoque = %s WHERE id_produto = %s"
         data = (
             nome_produto,
             preco,
             peso_medio,
             estoque,
-            produto_id
+            id_produto
         )
         cursor.execute(sql, data)
         conexao.commit()
