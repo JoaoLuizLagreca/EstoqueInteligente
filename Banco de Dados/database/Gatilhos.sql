@@ -6,6 +6,6 @@ begin
     insert into log_de_estoque(quantidade, preco, produto) values(
         new.estoque - old.estoque,
         old.Preco,
-        new.id_produto
+        new.produto_id
     );
 end $$
