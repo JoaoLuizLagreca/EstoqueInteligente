@@ -13,8 +13,7 @@
 // 2. Adjustment settings
 const long LOADCELL_OFFSET = 50682624;
 const long LOADCELL_DIVIDER = 5895655;
-const char *URL_AWS = "URL do AWS";
-
+const char *URL_AWS = "URL AWS";
 
 
 TaskHandle_t Core0T;
@@ -70,7 +69,7 @@ void NetworkHandle(void * pr){
       goto PORTAL;
     }
     
-    delay(1000);
+    delay(3000);
 
   }
 
@@ -81,7 +80,7 @@ void enviarDados(WiFiClient c){
    JSONVar json;
    HTTPClient http;
    
-   http.begin(c, URL_AWS);
+   http.begin(URL_AWS);
    http.addHeader("Content-Type", "application/json");
    json["peso"]=peso;
    
@@ -107,7 +106,7 @@ void SensorHandle(void * pr){
   while (true){
     peso = scale.get_units(10);
 
-    //Serial.print("Peso da prateleira: "); Serial.println(peso, 5);
+    Serial.print("Peso da prateleira: "); Serial.println(peso, 5);
     delay(10);
   }
   
