@@ -5,11 +5,10 @@ from calculos import Calculos
 from alteracao import Alteracao
 from exibicao import Exibicao
 
-class Main ():
 
-    def main():
+def main():
         host_database = "localhost"
-        user_database = ""
+        user_database = "root"
         pass_database = ""
         name_database =  "estoque_inteligente"
 
@@ -42,3 +41,6 @@ class Main ():
         #Alteracao.alteraProduto(conexao, nome_produto, preco, peso_medio, estado, estoque, produto_id)
         #Exibicao.exibeDadosDashboard(conexao)
         #Exibicao.exibeEstadoBalanca(conexao, peso, peso_medio)
+
+
+main()

@@ -1,6 +1,6 @@
 class Cadastro ():
 
-    def cadastroProduto(self,conexao, nome_produto, preco, peso_medio, estoque):
+    def cadastroProduto(conexao, nome_produto, preco, peso_medio, estoque):
         cursor = conexao.cursor()
         sql = "INSERT INTO produto (nome_produto, preco, peso_medio, estoque) VALUES (%s, %s, %s, %s)"
         data = (
