@@ -1,12 +1,12 @@
 use estoque_inteligente;
 
 delimiter $$
-create procedure adicionarProduto(NomeProduto varchar(50), Preco float, Peso_medio float)
+create procedure adicionarProduto(nome_produto varchar(50), preco float, peso_medio float)
 begin
-    insert into Produto(NomeProduto, Preco, peso_medio) values (
-        NomeProduto,
-        Preco,
-        Peso_medio
+    insert into produto(nome_produto, preco, peso_medio) values (
+        nome_produto,
+        preco,
+        peso_medio
     );
 end $$
 
@@ -14,14 +14,14 @@ delimiter $$
 create procedure compra(produto_id integer, quantidade integer)
 begin
     if quantidade > 0 then
-        select @estoque_atual := estoque from Produto where id=produto_id;
+        select @estoque_atual := estoque from Produto where id_produto=produto_id;
 
         if @estoque_atual - quantidade < 0 then
             # Relatar erro
             signal SQLSTATE 'ERROR'
             set MESSAGE_TEXT = 'Estoque seria inferior à 0 com essa quantidade';
         else
-            update Produto set estoque = @estoque_atual - quantidade where id=produto_id;
+            update produto set estoque = @estoque_atual - quantidade where id_produto=produto_id;
         end if;
     else
         # Relatar erro
@@ -38,16 +38,16 @@ begin
         signal SQLSTATE 'ERROR'
         set MESSAGE_TEXT = 'Valor quantidade inválido';
     else
-        select @estoque_atual := estoque from Produto where id=produto_id;
-        update Produto set estoque = @estoque_atual + quantidade where id=produto_id;
+        select @estoque_atual := estoque from produto where id_produto=produto_id;
+        update produto set estoque = @estoque_atual + quantidade where id_produto=produto_id;
     end if;
 end $$
 
 delimiter $$
 create procedure criarPrateleira(produto_nome varchar(50), capacidadeP integer)
 begin
-    insert into Prateleira(capacidade, produto) values(
+    insert into prateleira(capacidade, produto) values(
     capacidadeP,
-    (select id from Produto where NomeProduto=produto_nome)
+    (select id_produto from produto where nome_produto=produto_nome)
 );
 end $$
