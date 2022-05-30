@@ -51,3 +51,18 @@ begin
     (select id_produto from produto where nome_produto=produto_nome)
 );
 end $$
+
+delimiter $$
+create procedure atualizarQuantidadeNaPrateleira(id integer, qtd integer)
+begin
+
+     if qtd < 0 then
+        # Relatar erro
+        signal SQLSTATE 'ERROR'
+        set MESSAGE_TEXT = 'Valor quantidade não pode ser menor que 0';
+    else
+        update prateleira set quantidade = qtd where id_prateleira=id;
+    end if;
+
+    
+end$$
